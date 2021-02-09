@@ -7,6 +7,11 @@
             "label": "Quasar Dev",
             "type": "shell",
             "command": "quasar dev"
+        },
+        {
+            "label": "Firebase Deploy",
+            "type": "shell",
+            "command": "firebase deploy"
         }
     ]
 }
