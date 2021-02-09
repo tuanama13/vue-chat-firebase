@@ -1,25 +1,31 @@
 <template>
   <div class="q-pa-md row justify-center">
-    <div class="col-6">
-      <q-chat-message label="Sunday, 19th" />
+    <div class="col-6" style="height: 70vh;">
+      <q-scroll-area
+        @scroll="scrollPosition"
+        ref="scroll"
+        style="height: 79vh;"
+      >
+        <q-chat-message label="Sunday, 19th" />
 
-      <div v-for="(item, index) in allMessages" :key="index">
-        <q-chat-message
-          v-if="item.userId == 1"
-          :name="item.user.name"
-          avatar="https://cdn.quasar.dev/img/avatar4.jpg"
-          :text="[item.message]"
-          sent
-          stamp="7 minutes ago"
-        />
-        <q-chat-message
-          v-else
-          :name="item.user.name"
-          avatar="https://cdn.quasar.dev/img/avatar3.jpg"
-          :text="[item.message]"
-          stamp="4 minutes ago"
-        />
-      </div>
+        <div v-for="(item, index) in allMessages" :key="index">
+          <q-chat-message
+            v-if="item.userId == 1"
+            :name="item.user.name"
+            avatar="https://cdn.quasar.dev/img/avatar4.jpg"
+            :text="[item.message]"
+            sent
+            stamp="7 minutes ago"
+          />
+          <q-chat-message
+            v-else
+            :name="item.user.name"
+            avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+            :text="[item.message]"
+            stamp="4 minutes ago"
+          />
+        </div>
+      </q-scroll-area>
       <q-input
         @keyup.enter="sendMessage"
         outlined
@@ -64,12 +70,12 @@ export default {
       dense: false
     };
   },
-  created() {
+  mounted() {
     this.fetchMessage();
   },
   methods: {
-    fetchMessage() {
-      this.$db
+    async fetchMessage() {
+      await this.$db
         .collection("chats")
         .orderBy("createdAt")
         .onSnapshot(result => {
@@ -80,7 +86,9 @@ export default {
             // console.log(doc.id, " => ", doc.data());
           });
           this.allMessages = allMessages;
+          this.$refs.scroll.setScrollPosition(909, 1);
         });
+      this.$refs.scroll.setScrollPercentage(1);
     },
     sendMessage() {
       // Add a new document in collection "cities"
@@ -92,6 +100,9 @@ export default {
       });
       this.message = null;
       this.fetchMessage();
+    },
+    scrollPosition(e) {
+      // console.log(this.$refs.scroll);
     }
   }
 };
