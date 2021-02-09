@@ -12,7 +12,9 @@
         />
 
         <q-toolbar-title>
-          Vue + Firebase Realtime Chat
+          <span class="cursor-pointer" @click="$router.push('/')">
+            Vue + Firebase Realtime Chat
+          </span>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
